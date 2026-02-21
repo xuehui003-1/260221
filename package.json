@@ -1,0 +1,11 @@
+{
+  "name": "vat-exam",
+  "version": "1.0.0",
+  "description": "增值税计算与缴纳互动测试题",
+  "scripts": {
+    "dev": "npx serve public"
+  },
+  "keywords": ["增值税", "测试", "考试"],
+  "author": "",
+  "license": "MIT"
+}

@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>增值税计算与缴纳测试题</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .timer {
+            background: #fff3cd;
+            padding: 15px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            border-bottom: 1px solid #eee;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1e3c72;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+            margin-bottom: 20px;
+        }
+
+        .question {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .question-number {
+            font-weight: bold;
+            color: #1e3c72;
+            margin-bottom: 10px;
+        }
+
+        .question-text {
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .options {
+            margin-left: 20px;
+        }
+
+        .option {
+            display: block;
+            margin: 8px 0;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .option:hover {
+            background: #e9ecef;
+        }
+
+        .option input {
+            margin-right: 10px;
+        }
+
+        .short-answer input,
+        .short-answer textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        .short-answer textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .short-answer input:focus,
+        .short-answer textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .calculation-box {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 10px;
+        }
+
+        .calculation-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-size: 16px;
+        }
+
+        .button-group {
+            text-align: center;
+            margin: 30px 0;
+            padding-top: 20px;
+            border-top: 2px solid #eee;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            font-size: 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .result-section {
+            display: none;
+            background: #d4edda;
+            border: 2px solid #c3e6cb;
+            border-radius: 10px;
+            padding: 30px;
+            margin-top: 30px;
+        }
+
+        .result-section.show {
+            display: block;
+        }
+
+        .score {
+            text-align: center;
+            font-size: 48px;
+            font-weight: bold;
+            color: #155724;
+            margin-bottom: 20px;
+        }
+
+        .answer-explanation {
+            display: none;
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 10px;
+        }
+
+        .answer-explanation.show {
+            display: block;
+        }
+
+        .correct {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .incorrect {
+            color: #dc3545;
+            font-weight: bold;
+        }
+
+        .explanation-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #856404;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+            }
+
+            .header h1 {
+                font-size: 22px;
+            }
+
+            .btn {
+                display: block;
+                width: 100%;
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>增值税计算与缴纳测试题</h1>
+            <p>考试时间：120分钟 | 总分：100分</p>
+        </div>
+
+        <div class="timer">
+            <span>⏰ 剩余时间：</span>
+            <span id="timer">120:00</span>
+        </div>
+
+        <div class="content">
+            <form id="examForm">
+                <div class="section">
+                    <div class="section-title">一、单项选择题（每题2分，共20分）</div>
+                    
+                    <div class="question" data-question="1" data-answer="B">
+                        <div class="question-number">1. （2分）</div>
+                        <div class="question-text">增值税是对商品生产、流通、劳务服务中多个环节的（  ）征收的一种流转税。</div>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q1" value="A"> A. 全部销售额</label>
+                            <label class="option"><input type="radio" name="q1" value="B"> B. 新增价值或商品的附加值</label>
+                            <label class="option"><input type="radio" name="q1" value="C"> C. 利润额</label>
+                            <label class="option"><input type="radio" name="q1" value="D"> D. 成本额</label>
+                        </div>
+                        <div class="answer-explanation">
+                            <div class="explanation-title">正确答案：B</div>
+                            <div>增值税是对商品生产、流通、劳务服务中多个环节的新增价值或商品的附加值征收的一种流转税。</div>
+                        </div>
+                    </div>
+
+                    <div class="question" data-question="2" data-answer="C">
+                        <div class="question-number">2. （2分）</div>
+                        <div class="question-text">小规模纳税人的年应征增值税销售额标准为（  ）万元及以下。</div>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q2" value="A"> A. 50</label>
+                            <label class="option"><input type="radio" name="q2" value="B"> B. 80</label>
+                            <label class="option"><input type="radio" name="q2" value="C"> C. 500</label>
+                            <label class="option"><input type="radio" name="q2" value="D"> D. 1000</label>
+                        </div>
+                        <div class="answer-explanation">
+                            <div class="explanation-title">正确答案：C</div>
+                            <div>小规模纳税人的标准为年应征增值税销售额500万元及以下。</div>
+                        </div>
+                    </div>
+
+                    <div class="question" data-question="3" data-answer="C">
+                        <div class="question-number">3. （2分）</div>
+                        <div class="question-text">一般纳税人销售货物适用的基本税率是（  ）。</div>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q3" value="A"> A. 6%</label>
+                            <label class="option"><input type="radio" name="q3" value="B"> B. 9%</label>
+                            <label class="option"><input type="radio" name="q3" value="C"> C. 13%</label>
+                            <label class="option"><input type="radio" name="q3" value="D"> D. 3%</label>
+                        </div>
+                        <div class="answer-explanation">
+                            <div class="explanation-title">正确答案：C</div>
+                            <div>13%税率适用于销售货物、提供加工、修理修配劳务以及进口货物等。</div>
+                        </div>
+                    </div>
+
+                    <div class="question" data-question="4" data-answer="B">
+                        <div class="question-number">4. （2分）</div>
+                        <div class="question-text">建筑工程服务适用的增值税税率是（  ）。</div>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q4" value="A"> A. 6%</label>
+                            <label class="option"><input type="radio" name="q4" value="B"> B. 9%</label>
+                            <label class="option"><input type="radio" name="q4" value="C"> C. 13%</label>
+                            <label class="option"><input type="radio" name="q4" value="D"> D. 3%</label>
+                        </div>
+                        <div class="answer-explanation">
+                            <div class="explanation-title">正确答案：B</div>
+                            <div>9%税率适用于销售交通运输、邮政、基础电信、建筑、不动产租赁服务，销售不动产，转让土地使用权等。</div>
+                        </div>
+                    </div>
+
+                    <div class="question" data-question="5" data-answer="A">
+                        <div class="question-number">5. （2分）</div>
+                        <div class="question-text">现代服务业中的研发和技术服务适用的税率是（  ）。</div>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q5" value="A"> A. 6%</label>
+                            <label class="option"><input type="radio" name="q5" value="B"> B. 9%</label>
+                            <label class="option"><input type="radio" name="q5" value="C"> C. 13%</label>
+                            <label class="option"><input type="radio" name="q5" value="D"> D. 3%</label>
+                        </div>
+                        <div class="answer-explanation">
+                            <div class="explanation-title">正确答案：A</div>
+                            <div>6%税率适用于销售服务、无形资产等，如现代服务业中的研发和技术服务、信息技术服务等。</div>
+                        </div>
+                    </div>
+
+                    <div class="question" data-question="6" data-answer="B">
+                        <div class="question-number">6. （2分）</div>
+                        <div class="question-text">增值税的计税依据是（  ）。</div>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q6" value="A"> A. 成本价</label>
+                            <label class="option"><input type="radio" name="q6" value="B"> B. 销售额</label>
+                            <label class="option"><input type="radio" name="q6" value="C"> C. 利润</label>
+                            <label class="option"><input type="radio" name="q6" value="D"> D. 评估价</label>
+                        </div>
+                        <div class="answer-explanation">
+                            <div class="explanation-title">正确答案：B</div>
+                            <div>增值税的计税依据是销售额。销售额是指纳税人发生应税销售行为收取的全部价款和价外费用。</div>
+                        </div>
+                    </div>
+
+                    <div class="question" data-question="7" data-answer="C">
+                        <div class="question-number">7. （2分）</div>
+                        <div class="question-text">一般纳税人增值税应纳税额的计算公式是（  ）。</div>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q7" value="A"> A. 销售额×税率</label>
+                            <label class="option"><input type="radio" name="q7" value="B"> B. 销售额×征收率</label>
+                            <label class="option"><input type="radio" name="q7" value="C"> C. 当期销项税额 - 当期进项税额</label>
+                            <label class="option"><input type="radio" name="q7" value="D"> D. 当期进项税额 - 当期销项税额</label>
+                        </div>
+                        <div class="answer-explanation">
+                            <div class="explanation-title">正确答案：C</div>
+                            <div>一般纳税人采用一般计税方法计算增值税，计算公式为：应纳税额 = 当期销项税额 - 当期进项税额。</div>
+                        </div>
+                    </div>
+
+                    <div class="question" data-question="8" data-answer="B">
+                        <div class="question-number">8. （2分）</div>
+                        <div class="question-text">小规模纳税人适用简易计税方法，应纳税额 = （  ）。</div>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q8" value="A"> A. 销售额×税率</label>
+                            <label class="option"><input type="radio" name="q8" value="B"> B. 销售额×征收率</label>
+                            <label class="option"><input type="radio" name="q8" value="C"> C. 销项税额 - 进项税额</label>
+                            <label class="option"><input type="radio" name="q8" value="D"> D. 进项税额 - 销项税额</label>
+                        </div>
+                        <div class="answer-explanation">
+                            <div class="explanation-title">正确答案：B</div>
+                            <div>小规模纳税人适用简易计税方法，应纳税额 = 销售额×征收率。</div>
+                        </div>
+                    </div>
+
+                    <div class="question" data-question="9" data-answer="A">
+                        <div class="question-number">9. （2分）</div>
+                        <div class="question-text">一般纳税人通常按（  ）进行纳税申报。</div>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q9" value="A"> A. 月</label>
+                            <label class="option"><input type="radio" name="q9" value="B"> B. 季</label>
+                            <label class="option"><input type="radio" name="q9" value="C"> C. 半年</label>
+                            <label class="option"><input type="radio" name="q9" value="D"> D. 年</label>
+                        </div>
+                        <div class="answer-explanation">
+                            <div class="explanation-title">正确答案：A</div>
+                            <div>一般纳税人通常按月进行纳税申报。</div>
+                        </div>
+                    </div>
+
+                    <div class="question" data-question="10" data-answer="D">
+                        <div class="question-number">10. （2分）</div>
+                        <div class="question-text">纳税人出口货物适用（  ）税率。</div>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q10" value="A"> A. 6%</label>
+                            <label class="option"><input type="radio" name="q10" value="B"> B. 9%</label>
+                            <label class="option"><input type="radio" name="q10" value="C"> C. 13%</label>
+                            <label class="option"><input type="radio" name="q10" value="D"> D. 零</label>
+                        </div>
+                        <div class="answer-explanation">
+                            <div class="explanation-title">正确答案：D</div>
+                            <div>纳税人出口货物，税率为零；零税率并不意味着不征税，而是在出口环节不征收增值税，并且可以退还以前环节已缴纳的增值税。</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">二、判断题（每题1分，共10分）</div>
+                    
+                    <div class="question" data-question="11" data-answer="false">
+                        <div class="question-number">11. （1分）</div>
+                        <div class="question-text">增值税是在商品或服务的全部销售额上征税。</div>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q11" value="true"> 正确</label>
+                            <label class="option"><input type="radio" name="q11" value="false"> 错误</label>
+                        </div>
+                        <div class="answer-explanation">
+                            <div class="explanation-title">正确答案：错误</div>
+                            <div>增值税是对商品或服务的增值部分征税，而不是全部销售额。</div>
+                        </div>
+                    </div>
+
+                    <div class="question" data-question="12" data-answer="true">
+                        <div class="question-number">12. （1分）</div>
+                        <div class="question-text">一般纳税人适用一般计税方法，可以抵扣进项税额。</div>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q12" value="true"> 正确</label>
+                            <label class="option"><input type="radio" name="q12" value="false"> 错误</label>
+                        </div>
+                        <div class="answer-explanation">
+                            <div class="explanation-title">正确答案：正确</div>
+                            <div>一般纳税人适用一般计税方法，税率通常较高，但可以抵扣进项税额。</div>
+                        </div>
+                    </div>
+
+                    <div class="question" data-question="13" data-answer="false">
+                        <div class="question-number">13. （1分）</div>
+                        <div class="question-text">小规模纳税人可以抵扣进项税额。</div>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q13" value="true"> 正确</label>
+                            <label class="option"><input type="radio" name="q13" value="false"> 错误</label>
+                        </div>
+                        <div class="answer-explanation">
+                            <div class="explanation-title">正确答案：错误</div>
+                            <div>小规模纳税人适用简易计税方法，征收率相对较低，但不得抵扣进项税额。</div>
+                        </div>
+                    </div>
+
+                    <div class="question" data-question="14" data-answer="false">
+                        <div class="question-number">14. （1分）</div>
+                        <div class="question-text">销售额是指纳税人发生应税销售行为收取的全部价款和价外费用，包括收取的销项税额。</div>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q14" value="true"> 正确</label>
+                            <label class="option"><input type="radio" name="q14" value="false"> 错误</label>
+                        </div>
+                        <div class="answer-explanation">
+                            <div class="explanation-title">正确答案：错误</div>
+                            <div>销售额是指纳税人发生应税销售行为收取的全部价款和价外费用，但是不包括收取的销项税额。</div>
+                        </div>
+                    </div>
+
+                    <div class="question" data-question="15" data-answer="true">
+                        <div class="question-number">15. （1分）</div>
+                        <div class="question-text">价外费用包括手续费、补贴、违约金、包装费等各种性质的价外收费。</div>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q15" value="true"> 正确</label>
+                            <label class="option"><input type="radio" name="q15" value="false"> 错误</label>
+                        </div>
+                        <div class="answer-explanation">
+                            <div class="explanation-title">正确答案：正确</div>
+                            <div>价外费用包括价外向购买方收取的手续费、补贴、基金、集资费、返还利润、奖励费、违约金、滞纳金、延期付款利息、赔偿金、代收款项、代垫款项、包装费、包装物租金、储备费、优质费、运输装卸费以及其他各种性质的价外收费。</div>
+                        </div>
+                    </div>
+
+                    <div class="question" data-question="16" data-answer="false">
+                        <div class="question-number">16. （1分）</div>
+                        <div class="question-text">企业将自产货物用于集体福利，不需要视同销售计算销售额。</div>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q16" value="true"> 正确</label>
+                            <label class="option"><input type="radio" name="q16" value="false"> 错误</label>
+                        </div>
+                        <div class="answer-explanation">
+                            <div class="explanation-title">正确答案：错误</div>
+                            <div>企业将自产、委托加工的货物用于非增值税应税项目、集体福利或个人消费等，虽然没有实际的销售行为，但也要视同销售计算销售额。</div>
+                        </div>
+                    </div>
+
+                    <div class="question" data-question="17" data-answer="true">
+                        <div class="question-number">17. （1分）</div>
+                        <div class="question-text">从销售方取得的增值税专用发票上注明的增值税额可以抵扣。</div>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q17" value="true"> 正确</label>
+                            <label class="option"><input type="radio" name="q17" value="false"> 错误</label>
+                        </div>
+                        <div class="answer-explanation">
+                            <div class="explanation-title">正确答案：正确</div>
+                            <div>从销售方取得的增值税专用发票上注明的增值税额准予从销项税额中抵扣。</div>
+                        </div>
+                    </div>
+
+                    <div class="question" data-question="18" data-answer="false">
+                        <div class="question-number">18. （1分）</div>
+                        <div class="question-text">用于集体福利的购进货物对应的进项税额可以抵扣。</div>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q18" value="true"> 正确</label>
+                            <label class="option"><input type="radio" name="q18" value="false"> 错误</label>
+                        </div>
+                        <div class="answer-explanation">
+                            <div class="explanation-title">正确答案：错误</div>
+                            <div>用于简易计税方法计税项目、免征增值税项目、集体福利或者个人消费的购进货物、加工修理修配劳务、服务、无形资产和不动产，其进项税额不得从销项税额中抵扣。</div>
+                        </div>
+                    </div>
+
+                    <div class="question" data-question="19" data-answer="true">
+                        <div class="question-number">19. （1分）</div>
+                        <div class="question-text">小规模纳税人一般按季度进行纳税申报。</div>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q19" value="true"> 正确</label>
+                            <label class="option"><input type="radio" name="q19" value="false"> 错误</label>
+                        </div>
+                        <div class="answer-explanation">
+                            <div class="explanation-title">正确答案：正确</div>
+                            <div>小规模纳税人一般按季度进行纳税申报。</div>
+                        </div>
+                    </div>
+
+                    <div class="question" data-question="20" data-answer="true">
+                        <div class="question-number">20. （1分）</div>
+                        <div class="question-text">一般纳税人可以自行开具增值税专用发票和普通发票。</div>
+                        <div class="options">
+                            <label class="option"><input type="radio" name="q20" value="true"> 正确</label>
+                            <label class="option"><input type="radio" name="q20" value="false"> 错误</label>
+                        </div>
+                        <div class="answer-explanation">
+                            <div class="explanation-title">正确答案：正确</div>
+                            <div>一般纳税人可以自行开具增值税专用发票和普通发票；小规模纳税人通常只能自行开具增值税普通发票。</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">三、简答题（每题5分，共20分）</div>
+                    
+                    <div class="question short-answer" data-question="21">
+                        <div class="question-number">21. （5分）</div>
+                        <div class="question-text">请简述一般纳税人和小规模纳税人的主要区别。</div>
+                        <textarea name="q21" placeholder="请在此输入您的答案..."></textarea>
+                        <div class="answer-explanation">
+                            <div class="explanation-title">参考答案：</div>
+                            <div>
+                                1. 计税方法不同：一般纳税人适用一般计税方法；小规模纳税人适用简易计税方法。<br>
+                                2. 税率/征收率不同：一般纳税人税率较高（13%、9%、6%）；小规模纳税人征收率较低（3%）。<br>
+                                3. 进项税额抵扣：一般纳税人可以抵扣进项税额；小规模纳税人不得抵扣进项税额。<br>
+                                4. 销售额标准：一般纳税人年应征增值税销售额超过规定标准；小规模纳税人年应征增值税销售额500万元及以下。
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question short-answer" data-question="22">
+                        <div class="question-number">22. （5分）</div>
+                        <div class="question-text">请列出一般纳税人适用的税率及其适用范围。</div>
+                        <textarea name="q22" placeholder="请在此输入您的答案..."></textarea>
+                        <div class="answer-explanation">
+                            <div class="explanation-title">参考答案：</div>
+                            <div>
+                                1. 13%税率：适用于销售货物、提供加工、修理修配劳务以及进口货物等。<br>
+                                2. 9%税率：适用于销售交通运输、邮政、基础电信、建筑、不动产租赁服务，销售不动产，转让土地使用权等。<br>
+                                3. 6%税率：适用于销售服务、无形资产等，如现代服务业中的研发和技术服务、信息技术服务等。<br>
+                                4. 零税率：适用于纳税人出口货物，境内单位和个人跨境销售国务院规定范围内的服务、无形资产。
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question short-answer" data-question="23">
+                        <div class="question-number">23. （5分）</div>
+                        <div class="question-text">请列举准予从销项税额中抵扣的进项税额有哪些。</div>
+                        <textarea name="q23" placeholder="请在此输入您的答案..."></textarea>
+                        <div class="answer-explanation">
+                            <div class="explanation-title">参考答案：</div>
+                            <div>
+                                1. 从销售方取得的增值税专用发票上注明的增值税额。<br>
+                                2. 从海关取得的海关进口增值税专用缴款书上注明的增值税额。<br>
+                                3. 购进农产品，除取得增值税专用发票或者海关进口增值税专用缴款书外，按照农产品收购发票或者销售发票上注明的农产品买价和9%的扣除率计算的进项税额。<br>
+                                4. 从境外单位或者个人购进服务、无形资产或者不动产，自税务机关或者扣缴义务人取得的解缴税款的完税凭证上注明的增值税额。
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question short-answer" data-question="24">
+                        <div class="question-number">24. （5分）</div>
+                        <div class="question-text">请简述增值税缴纳的基本流程。</div>
+                        <textarea name="q24" placeholder="请在此输入您的答案..."></textarea>
+                        <div class="answer-explanation">
+                            <div class="explanation-title">参考答案：</div>
+                            <div>
+                                1. 纳税申报：一般纳税人按月申报，小规模纳税人按季度申报，填写增值税纳税申报表。<br>
+                                2. 税款缴纳：申报成功后，按照规定期限缴纳税款，可以通过网上银行、办税服务厅等方式缴纳。<br>
+                                3. 发票管理：按规定开具、取得和保管增值税专用发票和普通发票。<br>
+                                4. 税务检查与风险防控：做好自查自纠，及时发现和纠正税务风险，关注税收政策变化。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">四、计算题（每题10分，共30分）</div>
+                    
+                    <div class="question" data-question="25">
+                        <div class="question-number">25. （10分）</div>
+                        <div class="question-text">
+                            <strong>一般纳税人计算题</strong><br><br>
+                            某生产企业为一般纳税人，20XX年X月发生以下业务：<br>
+                            1. 购进原材料一批，取得增值税专用发票，注明价款200万元，增值税税额26万元，款项已支付。<br>
+                            2. 销售产品一批，开具增值税专用发票，销售额为400万元，增值税税额52万元，款项已收到。<br>
+                            3. 当月发生运输费用15万元，取得运输公司开具的增值税专用发票，注明增值税税额1.35万元。<br><br>
+                            <strong>要求：</strong>计算该企业当月应缴纳的增值税。
+                        </div>
+                        <div class="calculation-box">
+                            <label>计算过程：</label>
+                            <textarea class="calculation-input" name="q25_process" placeholder="请写下您的计算过程..."></textarea>
+                            <label>应缴纳的增值税（万元）：</label>
+                            <input type="number" class="calculation-input" name="q25_answer" step="0.01" placeholder="请输入答案">
+                        </div>
+                        <div class="answer-explanation">
+                            <div class="explanation-title">参考答案：</div>
+                            <div>
+                                进项税额 = 26 + 1.35 = 27.35万元<br>
+                                销项税额 = 52万元<br>
+                                应纳税额 = 52 - 27.35 = <strong>24.65万元</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question" data-question="26">
+                        <div class="question-number">26. （10分）</div>
+                        <div class="question-text">
+                            <strong>小规模纳税人计算题</strong><br><br>
+                            某小规模纳税人20XX年第二季度发生以下业务：<br>
+                            销售货物取得含税收入103万元（征收率3%）。<br><br>
+                            <strong>要求：</strong>计算该小规模纳税人第二季度应缴纳的增值税。
+                        </div>
+                        <div class="calculation-box">
+                            <label>计算过程：</label>
+                            <textarea class="calculation-input" name="q26_process" placeholder="请写下您的计算过程..."></textarea>
+                            <label>应缴纳的增值税（万元）：</label>
+                            <input type="number" class="calculation-input" name="q26_answer" step="0.01" placeholder="请输入答案">
+                        </div>
+                        <div class="answer-explanation">
+                            <div class="explanation-title">参考答案：</div>
+                            <div>
+                                不含税销售额 = 103 ÷ (1 + 3%) = 100万元<br>
+                                应纳税额 = 100 × 3% = <strong>3万元</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question" data-question="27">
+                        <div class="question-number">27. （10分）</div>
+                        <div class="question-text">
+                            <strong>综合计算题</strong><br><br>
+                            某贸易公司为一般纳税人，20XX年X月发生以下业务：<br>
+                            1. 购进商品一批，取得增值税专用发票，注明价款300万元，增值税税额39万元。<br>
+                            2. 销售商品一批，开具增值税专用发票，销售额为500万元，增值税税额65万元。<br>
+                            3. 将购进的一批商品用于职工福利，该批商品购进价款50万元，增值税税额6.5万元。<br><br>
+                            <strong>要求：</strong>计算该企业当月应缴纳的增值税。
+                        </div>
+                        <div class="calculation-box">
+                            <label>计算过程：</label>
+                            <textarea class="calculation-input" name="q27_process" placeholder="请写下您的计算过程..."></textarea>
+                            <label>应缴纳的增值税（万元）：</label>
+                            <input type="number" class="calculation-input" name="q27_answer" step="0.01" placeholder="请输入答案">
+                        </div>
+                        <div class="answer-explanation">
+                            <div class="explanation-title">参考答案：</div>
+                            <div>
+                                可抵扣的进项税额 = 39 - 6.5 = 32.5万元（用于职工福利的进项税额不得抵扣）<br>
+                                销项税额 = 65万元<br>
+                                应纳税额 = 65 - 32.5 = <strong>32.5万元</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">五、会计分录题（每题10分，共20分）</div>
+                    
+                    <div class="question short-answer" data-question="28">
+                        <div class="question-number">28. （10分）</div>
+                        <div class="question-text">
+                            <strong>一般纳税人会计分录</strong><br><br>
+                            某一般纳税人发生以下业务：<br>
+                            1. 采购一批原材料，价款150万元，增值税税额19.5万元，款项已通过银行支付。<br>
+                            2. 销售一批产品，售价300万元，增值税税额39万元，款项收到存入银行。<br>
+                            3. 月末结转本月应交未交增值税19.5万元。<br><br>
+                            <strong>要求：</strong>编制上述业务的会计分录。
+                        </div>
+                        <textarea name="q28" placeholder="请在此输入会计分录..."></textarea>
+                        <div class="answer-explanation">
+                            <div class="explanation-title">参考答案：</div>
+                            <div>
+                                1. 采购原材料时：<br>
+                                借：原材料 150<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;应交税费——应交增值税（进项税额） 19.5<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;贷：银行存款 169.5<br><br>
+                                2. 销售产品时：<br>
+                                借：银行存款 339<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;贷：主营业务收入 300<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;应交税费——应交增值税（销项税额） 39<br><br>
+                                3. 月末结转增值税：<br>
+                                借：应交税费——应交增值税（转出未交增值税） 19.5<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;贷：应交税费——未交增值税 19.5
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question short-answer" data-question="29">
+                        <div class="question-number">29. （10分）</div>
+                        <div class="question-text">
+                            <strong>小规模纳税人会计分录</strong><br><br>
+                            某小规模纳税人发生以下业务：<br>
+                            1. 采购一批货物，价款80万元，增值税税额2.4万元（征收率3%），款项未付。<br>
+                            2. 销售货物，取得含税收入103万元（征收率3%），款项已收。<br>
+                            3. 缴纳增值税3万元。<br><br>
+                            <strong>要求：</strong>编制上述业务的会计分录。
+                        </div>
+                        <textarea name="q29" placeholder="请在此输入会计分录..."></textarea>
+                        <div class="answer-explanation">
+                            <div class="explanation-title">参考答案：</div>
+                            <div>
+                                1. 采购货物时：<br>
+                                借：库存商品 82.4<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;贷：应付账款 82.4<br><br>
+                                2. 销售货物时：<br>
+                                借：银行存款 103<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;贷：主营业务收入 100<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;应交税费——应交增值税 3<br><br>
+                                3. 缴纳增值税时：<br>
+                                借：应交税费——应交增值税 3<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;贷：银行存款 3
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button type="button" class="btn btn-primary" onclick="submitExam()">提交答卷</button>
+                    <button type="button" class="btn btn-secondary" onclick="showAnswers()">查看答案</button>
+                </div>
+            </form>
+
+            <div class="result-section" id="resultSection">
+                <div class="score" id="scoreDisplay">0分</div>
+                <p style="text-align: center; font-size: 18px; margin-bottom: 20px;">恭喜您完成测试！</p>
+                <p style="text-align: center; color: #666;">客观题（选择题和判断题）已自动评分，主观题请自行对照答案评分。</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let totalMinutes = 120;
+        let remainingSeconds = totalMinutes * 60;
+        let timerInterval;
+
+        window.onload = function() {
+            startTimer();
+        };
+
+        function startTimer() {
+            timerInterval = setInterval(function() {
+                remainingSeconds--;
+                if (remainingSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    alert('考试时间到！');
+                    submitExam();
+                }
+                updateTimerDisplay();
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(remainingSeconds / 60);
+            const seconds = remainingSeconds % 60;
+            document.getElementById('timer').textContent = 
+                String(minutes).padStart(2, '0') + ':' + String(seconds).padStart(2, '0');
+        }
+
+        function submitExam() {
+            clearInterval(timerInterval);
+            let score = 0;
+
+            for (let i = 1; i <= 10; i++) {
+                const question = document.querySelector('[data-question="' + i + '"]');
+                const correctAnswer = question.getAttribute('data-answer');
+                const selected = document.querySelector('input[name="q' + i + '"]:checked');
+                
+                if (selected && selected.value === correctAnswer) {
+                    score += 2;
+                }
+            }
+
+            for (let i = 11; i <= 20; i++) {
+                const question = document.querySelector('[data-question="' + i + '"]');
+                const correctAnswer = question.getAttribute('data-answer');
+                const selected = document.querySelector('input[name="q' + i + '"]:checked');
+                
+                if (selected && selected.value === correctAnswer) {
+                    score += 1;
+                }
+            }
+
+            document.getElementById('scoreDisplay').textContent = score + '分（客观题）';
+            document.getElementById('resultSection').classList.add('show');
+            document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth' });
+            
+            showAnswers();
+        }
+
+        function showAnswers() {
+            const explanations = document.querySelectorAll('.answer-explanation');
+            explanations.forEach(function(exp) {
+                exp.classList.add('show');
+            });
+
+            for (let i = 1; i <= 20; i++) {
+                const question = document.querySelector('[data-question="' + i + '"]');
+                const correctAnswer = question.getAttribute('data-answer');
+                const options = question.querySelectorAll('.option');
+                
+                options.forEach(function(opt) {
+                    const input = opt.querySelector('input');
+                    if (input) {
+                        if (input.value === correctAnswer) {
+                            opt.style.color = '#28a745';
+                            opt.style.fontWeight = 'bold';
+                        } else if (input.checked && input.value !== correctAnswer) {
+                            opt.style.color = '#dc3545';
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>
